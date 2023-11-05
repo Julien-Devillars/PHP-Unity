@@ -7,10 +7,10 @@ using UnityEngine.Networking;
 
 public class MessageHandler : MonoBehaviour
 {
-    public string serverURL = "http://localhost/unity_gpt.php";
+    private string serverURL = "get_messages.php";
     public List<TextMeshProUGUI> mMessages = new List<TextMeshProUGUI>();
-    public bool mUpdateMessages = false;
-    public float mUpdateTime = 3f;
+    public bool mUpdateMessages = true;
+    private float mUpdateTime = 3f;
 
     public void Update()
     {
@@ -36,11 +36,34 @@ public class MessageHandler : MonoBehaviour
         }
     }
 
+    private void clearMessages()
+    {
+
+        mMessages.Clear();
+        deleteChildren();
+    }
+
+    private void deleteChildren()
+    {
+        // Iterate through all child transforms and destroy them
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     private void updateMessages(List<string> list)
     {
         if (list.Count == mMessages.Count) return;
         
         int start_index = list.Count > mMessages.Count ? mMessages.Count : 0;
+        if(start_index == 0)
+        {
+            clearMessages();
+        }
+
+        GetComponent<AudioSource>().Play();
+        
         for(int i = start_index; i < list.Count; ++i)
         {
             addMessage(list[i]);
@@ -63,13 +86,15 @@ public class MessageHandler : MonoBehaviour
     IEnumerator waitToUpdate()
     {
         mUpdateMessages = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(mUpdateTime);
         mUpdateMessages = true;
     }
 
     IEnumerator GetMessages(System.Action<string> callback)
     {
-        UnityWebRequest www = UnityWebRequest.Get(serverURL);
+        string url = $"http://{IPConfig.IP}/{serverURL}";
+        Debug.Log(url);
+        UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)
