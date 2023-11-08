@@ -106,7 +106,6 @@ public Dictionary<List<Vector2>, string> mSchemaToText = new Dictionary<List<Vec
             Debug.Log(pos);
         }
 
-        mText.text = "Schema not found !";
         foreach (List<Vector2> schema in mSchemaToText.Keys)
         {
             if (AreListsEqual(schema, mSchemaPosition))

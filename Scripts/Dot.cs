@@ -33,7 +33,7 @@ public class Dot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
 
     void Start()
     {
-        mImage = GetComponent<Image>();
+        mImage = transform.GetChild(0).GetComponent<Image>();
         mLineDrawer = GameObject.FindObjectOfType<LineDrawer>();
         mSchema = GameObject.FindObjectOfType<Schema>();
 

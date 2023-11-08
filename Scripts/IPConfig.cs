@@ -7,6 +7,8 @@ public class IPConfig : MonoBehaviour
 {
     public TMP_InputField mInput;
     public static string IP = "192.168.1.35";
+    public static string DEFAULT = "content";
+    public static string SALLE = "Psychose";
 
     public void Start()
     {

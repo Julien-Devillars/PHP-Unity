@@ -10,7 +10,7 @@ public class MessageHandler : MonoBehaviour
     private string serverURL = "get_messages.php";
     public List<TextMeshProUGUI> mMessages = new List<TextMeshProUGUI>();
     public bool mUpdateMessages = true;
-    private float mUpdateTime = 3f;
+    private float mUpdateTime = 1f;
 
     public void Update()
     {
@@ -92,7 +92,7 @@ public class MessageHandler : MonoBehaviour
 
     IEnumerator GetMessages(System.Action<string> callback)
     {
-        string url = $"http://{IPConfig.IP}/{serverURL}";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/get_messages.php";
         Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();

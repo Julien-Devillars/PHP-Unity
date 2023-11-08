@@ -18,7 +18,7 @@ public class CodeHandler : MonoBehaviour
         string result = mInput.text;
         if(mResultDictionary.ContainsKey(result.ToUpper())) 
         {
-            string text_to_display = mResultDictionary[result];
+            string text_to_display = mResultDictionary[result.ToUpper()];
             mResultText.text = text_to_display;
         }
         else
