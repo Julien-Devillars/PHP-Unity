@@ -16,11 +16,11 @@ public class MessageHandler : MonoBehaviour
     {
         if(mUpdateMessages)
         {
-            Debug.Log("Update messages");
+            //Debug.Log("Update messages");
             StartCoroutine(waitToUpdate()); 
             StartCoroutine(GetMessages(response =>
             {
-                Debug.Log("Get callback " + response);
+                //Debug.Log("Get callback " + response);
                 // Handle the response here
                 if (!string.IsNullOrEmpty(response))
                 {
@@ -93,7 +93,7 @@ public class MessageHandler : MonoBehaviour
     IEnumerator GetMessages(System.Action<string> callback)
     {
         string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/get_messages.php";
-        Debug.Log(url);
+        //Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IPConfig : MonoBehaviour
 {
@@ -23,5 +24,13 @@ public class IPConfig : MonoBehaviour
     {
         IP = mInput.text;
         ES3.Save<string>("IP", IP);
+    }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
 }
