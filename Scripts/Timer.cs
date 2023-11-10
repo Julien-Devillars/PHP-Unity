@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
 
     private IEnumerator StartTimerRequest()
     {
-        UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/update_timer.php?action=get_timer");
+        UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/update_timer.php?action=get_timer");
         yield return request.SendWebRequest();
 
         if (request.isNetworkError || request.isHttpError)
@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
     }
     private IEnumerator AddTimeRequest()
     {
-        UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/update_timer.php?action=get_more_time");
+        UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/update_timer.php?action=get_more_time");
         yield return request.SendWebRequest();
 
         if (request.isNetworkError || request.isHttpError)

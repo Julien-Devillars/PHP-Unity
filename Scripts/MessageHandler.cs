@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -12,12 +13,15 @@ public class MessageHandler : MonoBehaviour
     public bool mUpdateMessages = true;
     private float mUpdateTime = 1f;
 
+    private string pre_message = "Agents, ";
+    private string agent_name = "Agent A";
     public void Update()
     {
         if(mUpdateMessages)
         {
             //Debug.Log("Update messages");
             StartCoroutine(waitToUpdate()); 
+            StartCoroutine(GetAgentName());
             StartCoroutine(GetMessages(response =>
             {
                 //Debug.Log("Get callback " + response);
@@ -26,11 +30,6 @@ public class MessageHandler : MonoBehaviour
                 {
                     List<string> list = ParseJsonArray(response);
                     updateMessages(list);
-                }
-                else
-                {
-                    Debug.Log("Error callback");
-                    // Handle the case where there was an error or empty response
                 }
             }));
         }
@@ -77,8 +76,23 @@ public class MessageHandler : MonoBehaviour
         text_go.transform.parent = transform;
         text_go.transform.localScale = new Vector3(1f, 1f, 1f);
 
+        string edited_text = $"<color=red>{agent_name}</color> : ";
+
+        if (_text.Contains(pre_message))
+        {
+            edited_text += _text;
+        }
+        else
+        {
+            StringBuilder str_text = new StringBuilder(_text);
+            str_text[0] = char.ToLowerInvariant(str_text[0]);
+            edited_text += pre_message + str_text;
+        }
+
+
+
         TextMeshProUGUI text = text_go.GetComponent<TextMeshProUGUI>();
-        text.text = _text;
+        text.text = edited_text;
         mMessages.Add(text);
         return text;
     }
@@ -92,7 +106,7 @@ public class MessageHandler : MonoBehaviour
 
     IEnumerator GetMessages(System.Action<string> callback)
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/get_messages.php";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_messages.php?mission={IPConfig.MISSION}";
         //Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
@@ -104,9 +118,31 @@ public class MessageHandler : MonoBehaviour
         }
         else
         {
-            string response = www.downloadHandler.text;
-            //Debug.Log(response);
+            string response = "";
+            //string response = www.downloadHandler.text;
+            if (www.downloadHandler.data != null)
+            {
+                response = Encoding.UTF8.GetString(www.downloadHandler.data);
+            }
+            
             callback(response); // Call the callback with the response data
+        }
+    }
+    IEnumerator GetAgentName()
+    {
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_agent.php?mission={IPConfig.MISSION}";
+        //Debug.Log(url);
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.LogError("Error: " + www.error);
+        }
+        else
+        {
+            string response = www.downloadHandler.text;
+            agent_name = response;
         }
     }
 

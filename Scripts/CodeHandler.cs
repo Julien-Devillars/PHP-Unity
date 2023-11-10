@@ -31,7 +31,7 @@ public class CodeHandler : MonoBehaviour
 
     IEnumerator checkWebCode(string code)
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/code/get_code.php?lang={Translation.lang}&code={code}";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/code/get_code.php?lang={Translation.lang}&code={code}";
         full_path = url;
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();

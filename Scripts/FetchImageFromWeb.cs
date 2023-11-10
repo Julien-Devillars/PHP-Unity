@@ -9,8 +9,7 @@ using System;
 
 public class FetchImageFromWeb : MonoBehaviour
 {
-
-    public string relative_path = "get_main_image.php";
+    public string image_name = "Main";
     public string full_path = "";
 
     private void Update()
@@ -20,7 +19,7 @@ public class FetchImageFromWeb : MonoBehaviour
 
     IEnumerator setImage()
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/{relative_path}";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_image.php?mission={IPConfig.MISSION}&image={image_name}";
         full_path = url;
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();

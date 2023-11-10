@@ -15,7 +15,7 @@ public class Info : MonoBehaviour
 
     IEnumerator setInfo()
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/info/get_info.php?lang=fr";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/info/get_info.php?lang=fr";
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 

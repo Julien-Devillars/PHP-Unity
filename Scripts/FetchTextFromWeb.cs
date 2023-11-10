@@ -18,7 +18,7 @@ public class FetchTextFromWeb : MonoBehaviour
 
     IEnumerator setText()
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.SALLE}/{relative_path}?lang={Translation.lang}";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/{relative_path}?lang={Translation.lang}";
         full_path = url;
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
