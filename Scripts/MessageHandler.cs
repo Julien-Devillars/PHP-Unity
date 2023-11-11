@@ -8,7 +8,6 @@ using UnityEngine.Networking;
 
 public class MessageHandler : MonoBehaviour
 {
-    private string serverURL = "get_messages.php";
     public List<TextMeshProUGUI> mMessages = new List<TextMeshProUGUI>();
     public bool mUpdateMessages = true;
     private float mUpdateTime = 1f;
@@ -19,7 +18,6 @@ public class MessageHandler : MonoBehaviour
     {
         if (mUpdateMessages)
         {
-            //Debug.Log("Update messages");
             StartCoroutine(waitToUpdate());
             StartCoroutine(GetAgentName());
             StartCoroutine(GetMessages(response =>
@@ -103,11 +101,10 @@ public class MessageHandler : MonoBehaviour
     IEnumerator GetMessages(System.Action<string> callback)
     {
         string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_messages.php?mission={IPConfig.MISSION}";
-        //Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + www.error);
             callback(""); // Call the callback with an empty response
@@ -131,7 +128,7 @@ public class MessageHandler : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + www.error);
         }

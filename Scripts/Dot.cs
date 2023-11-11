@@ -24,7 +24,6 @@ public class Dot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
             int number;
             if (int.TryParse(match.Value, out number))
             {
-                //Debug.Log("Number extracted from the GameObject name: " + number);
                 return number;
             }
         }

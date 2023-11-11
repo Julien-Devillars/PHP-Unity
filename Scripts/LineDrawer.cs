@@ -42,23 +42,12 @@ public class LineDrawer : MonoBehaviour
     private void updateMousePoint()
     {
         Vector3 mouse = getMousePoint();
-        //if (!isMousePoint(mouse)) return;
-
         polyline.SetPointPosition(polyline.points.Count - 1, mouse);
-        //PolylinePoint point = polyline.points[polyline.points.Count - 1];
-        //Debug.Log("Update");
-        //Debug.Log(mouse);
-        //Debug.Log(point.point);
-        //point.point = mouse;
-        //Debug.Log(point.point);
-        //polyline.UpdateMesh(true);
     }
 
     private void addMouseAsPoint()
     {
         Vector3 mouse = getMousePoint();
-        Debug.Log(mouse);
-        //if (!isMousePoint(mouse)) return;
         polyline.AddPoint(mouse, polyline.points[^1].thickness);
     }
 
@@ -73,10 +62,6 @@ public class LineDrawer : MonoBehaviour
             polyline.AddPoint(point, thickness);
         }
         addMouseAsPoint();
-        //Debug.Log(polyline.points.Count);
-        //if(polyline.points.Count == 1)
-        //{
-        //}
     }
 
     public void clear()

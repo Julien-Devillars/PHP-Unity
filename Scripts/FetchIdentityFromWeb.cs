@@ -27,9 +27,7 @@ public class FetchIdentityFromWeb : FetchDataFromWeb
         {
             if (!string.IsNullOrEmpty(response))
             {
-                Debug.Log($"response: {response}");
                 string[] identities = response.Split("\n");
-                Debug.Log(identities.Length);
                 string pattern = "\"(.*?)\":\\s+\"(.*?)\"";
 
                 for (int i = 0; i< identities.Length; i++)
@@ -49,8 +47,6 @@ public class FetchIdentityFromWeb : FetchDataFromWeb
 
                     title_text.text = key;
                     value_text.text = value;
-
-
                 }
             }
         }));

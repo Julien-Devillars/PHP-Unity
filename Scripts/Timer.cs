@@ -24,7 +24,7 @@ public class Timer : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/update_timer.php?action=get_timer");
         yield return request.SendWebRequest();
 
-        if (request.isNetworkError || request.isHttpError)
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(request.error);
         }
@@ -50,7 +50,7 @@ public class Timer : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get($"{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/update_timer.php?action=get_more_time");
         yield return request.SendWebRequest();
 
-        if (request.isNetworkError || request.isHttpError)
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(request.error);
         }

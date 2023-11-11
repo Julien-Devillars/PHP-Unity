@@ -73,6 +73,10 @@ public class Translation : MonoBehaviour
         { "DIVERS", new Dictionary<string, string>(){
             { "en", "Misc." },
             { "fr", "Divers" }
+        }},
+        { "RETOUR AU SCHÉMA", new Dictionary<string, string>(){
+            { "en", "Return to diagram" },
+            { "fr", "Retour au schéma" }
         }}
     };
 

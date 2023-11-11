@@ -115,9 +115,6 @@ public class Schema : FetchDataFromWeb, IPointerUpHandler, IPointerDownHandler, 
             // Before
             //str_positions.Add($"({pos.x},{pos.y})");
             string str = translater[pos].ToString();
-            Debug.Log(pos);
-            Debug.Log(translater[pos]);
-            Debug.Log(str);
             str_positions.Add(str);
         }
 
@@ -135,11 +132,9 @@ public class Schema : FetchDataFromWeb, IPointerUpHandler, IPointerDownHandler, 
     {
         string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_schema.php?mission={IPConfig.MISSION}&lang={Translation.lang}&schema={mCurrentSchemaString}";
         full_path = url;
-        Debug.Log(url);
+
         StartCoroutine(getData(url, response =>
         {
-
-            Debug.Log(response);
             if (!string.IsNullOrEmpty(response))
             {
                 if(response.Contains("<Error>") || response.Contains("<Erreur>"))
