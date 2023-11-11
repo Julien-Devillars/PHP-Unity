@@ -24,13 +24,9 @@ public class MessageHandler : MonoBehaviour
             StartCoroutine(GetAgentName());
             StartCoroutine(GetMessages(response =>
             {
-                //Debug.Log("Get callback " + response);
-                // Handle the response here
-                if (!string.IsNullOrEmpty(response))
-                {
-                    List<string> list = ParseJsonArray(response);
-                    updateMessages(list);
-                }
+                List<string> list = ParseJsonArray(response);
+                updateMessages(list);
+                
             }));
         }
     }

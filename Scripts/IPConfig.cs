@@ -14,10 +14,10 @@ public class IPConfig : MonoBehaviour
 
     public void Start()
     {
-        mInput.text = ES3.Load<string>("IP");
+        mInput.text = ES3.Load<string>("IP", "SaveFile.es3", IP);
         updateIP();
 
-        MISSION = ES3.Load<string>("Mission");
+        MISSION = ES3.Load<string>("Mission", "SaveFile.es3", MISSION);
         Debug.Log($"Mission loaded : {MISSION}");
     }
     public void updateIP()

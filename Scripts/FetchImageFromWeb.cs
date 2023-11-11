@@ -11,14 +11,21 @@ public class FetchImageFromWeb : MonoBehaviour
 {
     public string image_name = "Main";
     public string full_path = "";
-
+    public string mPreviousIP = "";
+    public string mPreviousMission = "";
     private void Start()
     {
         GetComponent<Image>().enabled = false;
     }
     private void Update()
     {
-        StartCoroutine(setImage());
+        if(mPreviousIP != IPConfig.IP || mPreviousMission != IPConfig.MISSION)
+        {
+            Debug.Log("Update image");
+            mPreviousIP = IPConfig.IP;
+            mPreviousMission = IPConfig.MISSION;
+            StartCoroutine(setImage());
+        }
     }
 
     IEnumerator setImage()
