@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class FetchTextFromWeb : MonoBehaviour
 {
 
-    public string relative_path = "info/get_info.php";
+    public string relative_path = "./get_mission.php";
     public string full_path = "";
 
     private void Update()
@@ -18,7 +18,7 @@ public class FetchTextFromWeb : MonoBehaviour
 
     IEnumerator setText()
     {
-        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{IPConfig.MISSION}/{relative_path}?lang={Translation.lang}";
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/{relative_path}?lang={Translation.lang}&mission={IPConfig.MISSION}";
         full_path = url;
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
