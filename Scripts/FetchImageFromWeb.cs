@@ -12,6 +12,10 @@ public class FetchImageFromWeb : MonoBehaviour
     public string image_name = "Main";
     public string full_path = "";
 
+    private void Start()
+    {
+        GetComponent<Image>().enabled = false;
+    }
     private void Update()
     {
         StartCoroutine(setImage());
@@ -38,6 +42,7 @@ public class FetchImageFromWeb : MonoBehaviour
 
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
+            GetComponent<Image>().enabled = true;
             GetComponent<Image>().sprite = sprite;
         }
     }

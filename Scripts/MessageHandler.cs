@@ -17,10 +17,10 @@ public class MessageHandler : MonoBehaviour
     private string agent_name = "Agent A";
     public void Update()
     {
-        if(mUpdateMessages)
+        if (mUpdateMessages)
         {
             //Debug.Log("Update messages");
-            StartCoroutine(waitToUpdate()); 
+            StartCoroutine(waitToUpdate());
             StartCoroutine(GetAgentName());
             StartCoroutine(GetMessages(response =>
             {

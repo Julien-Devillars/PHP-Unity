@@ -1,56 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Profiling.Memory.Experimental;
 
 
-public class Schema : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IPointerExitHandler
+public class Schema : FetchDataFromWeb, IPointerUpHandler, IPointerDownHandler, IPointerExitHandler
 {
     static public bool mIsDragging;
     public LineDrawer mLineDrawer;
     public TextMeshProUGUI mText;
+    public GameObject mButton;
+    public GameObject mSchema;
 
     public List<Vector2> mSchemaPosition;
-    private List<Vector2> test = new List<Vector2>
-            {
-            new Vector2(0f, 0f) ,
-            new Vector2(1f, 0f) ,
-            new Vector2(2f, 0f) ,
-            new Vector2(3f, 0f) ,
-            new Vector2(4f, 0f)
-            };
-public Dictionary<List<Vector2>, string> mSchemaToText = new Dictionary<List<Vector2>, string>()
+    public string mCurrentSchemaString;
+
+    public Dictionary<Vector2, int> translater = new Dictionary<Vector2, int>()
     {
-        { new List<Vector2>
-            {
-            new Vector2(0f, 0f) ,
-            new Vector2(1f, 0f) ,
-            new Vector2(2f, 0f) ,
-            new Vector2(3f, 0f) ,
-            new Vector2(4f, 0f)
-            }
-        , "This is the first Schema" },
-        { new List<Vector2>
-            {
-            new Vector2(0f, 0f) ,
-            new Vector2(1f, 1f) ,
-            new Vector2(2f, 2f) ,
-            new Vector2(3f, 3f) ,
-            new Vector2(4f, 4f)
-            }
-        , "This is the second Schema" },
-        { new List<Vector2>
-            {
-            new Vector2(0f, 0f) ,
-            new Vector2(0f, 1f) ,
-            new Vector2(0f, 2f) ,
-            new Vector2(0f, 3f) ,
-            new Vector2(0f, 4f)
-            }
-        , "This is the third Schema" }
+        {new Vector2(0f, 0f), 1 },
+        {new Vector2(1f, 0f), 2 },
+        {new Vector2(2f, 0f), 3 },
+        {new Vector2(3f, 0f), 4 },
+        {new Vector2(4f, 0f), 5 },
+
+        {new Vector2(0f, 1f), 6 },
+        {new Vector2(1f, 1f), 7 },
+        {new Vector2(2f, 1f), 8 },
+        {new Vector2(3f, 1f), 9 },
+        {new Vector2(4f, 1f), 10 },
+
+        {new Vector2(0f, 2f), 11 },
+        {new Vector2(1f, 2f), 12 },
+        {new Vector2(2f, 2f), 13 },
+        {new Vector2(3f, 2f), 14 },
+        {new Vector2(4f, 2f), 15 },
+
+        {new Vector2(0f, 3f), 16 },
+        {new Vector2(1f, 3f), 17 },
+        {new Vector2(2f, 3f), 18 },
+        {new Vector2(3f, 3f), 19 },
+        {new Vector2(4f, 3f), 20 },
+
+        {new Vector2(0f, 4f), 21 },
+        {new Vector2(1f, 4f), 22 },
+        {new Vector2(2f, 4f), 23 },
+        {new Vector2(3f, 4f), 24 },
+        {new Vector2(4f, 4f), 25 },
     };
 
     void Start()
@@ -101,31 +102,60 @@ public Dictionary<List<Vector2>, string> mSchemaToText = new Dictionary<List<Vec
     public void clear()
     {
         mIsDragging = false;
+        if (mSchemaPosition.Count < 3)
+        {
+            mLineDrawer.clear();
+            mSchemaPosition.Clear();
+            return;
+        }
+
+        List<string> str_positions = new List<string>();
         foreach(Vector2 pos in mSchemaPosition)
         {
+            // Before
+            //str_positions.Add($"({pos.x},{pos.y})");
+            string str = translater[pos].ToString();
             Debug.Log(pos);
+            Debug.Log(translater[pos]);
+            Debug.Log(str);
+            str_positions.Add(str);
         }
 
-        foreach (List<Vector2> schema in mSchemaToText.Keys)
-        {
-            if (AreListsEqual(schema, mSchemaPosition))
-            {
-                Debug.Log("Found");
-                string text = mSchemaToText[schema];
-                Debug.Log(text);
+        //  Before
+        //mCurrentSchemaString = string.Join(";", str_positions);
+        mCurrentSchemaString = string.Join("", str_positions);
 
-                mText.text = text;
-                break;
-            }
-        }
-        //if (mSchemaToText.ContainsKey(mSchemaPosition))
-        //{
-        //    Debug.Log("into the wild");
-        //    string text = mSchemaToText[mSchemaPosition];
-        //    mText.text = text;
-        //}
+        checkSchema();
+
         mLineDrawer.clear();
         mSchemaPosition.Clear();
+    }
+
+    public void checkSchema()
+    {
+        string url = $"http://{IPConfig.IP}/{IPConfig.DEFAULT}/get_schema.php?mission={IPConfig.MISSION}&lang={Translation.lang}&schema={mCurrentSchemaString}";
+        full_path = url;
+        Debug.Log(url);
+        StartCoroutine(getData(url, response =>
+        {
+
+            Debug.Log(response);
+            if (!string.IsNullOrEmpty(response))
+            {
+                if(response.Contains("<Error>") || response.Contains("<Erreur>"))
+                {
+                    response = response.Replace("<Error>", "");
+                    response = response.Replace("<Erreur>", "");
+                }
+                else
+                {
+                    mButton.SetActive(true);
+                    mSchema.SetActive(false);
+                }
+                mText.gameObject.SetActive(true);
+                mText.text = response;
+            }
+        }));
     }
 
 }
